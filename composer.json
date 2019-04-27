@@ -1,0 +1,43 @@
+{
+  "name": "idiosyncratic/container",
+  "description" : "PSR-11 container",
+  "type": "library",
+  "license": "ISC",
+  "authors": [
+    {
+      "name": "Jason Silkey",
+      "email": "jason@jasonsilkey.com"
+    }
+  ],
+  "keywords": [
+    "psr-11"
+  ],
+  "require": {
+    "php": ">=7.3",
+    "psr/container": "^1.0"
+  },
+  "require-dev": {
+    "doctrine/coding-standard": "^6.0",
+    "phpstan/phpstan": "^0.11",
+    "phpunit/phpunit": "^8.0"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true,
+    "discard-changes": true,
+    "bin-dir" : "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "Idiosyncratic\\Container\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Idiosyncratic\\Container\\": "tests"
+    }
+  }
+}
