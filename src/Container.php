@@ -17,6 +17,7 @@ class Container implements ContainerInterface
     /** @var array<string, Entry> */
     private $entries;
 
+    /** @var EntryFactory */
     private $entryFactory;
 
     public function __construct()
@@ -53,7 +54,7 @@ class Container implements ContainerInterface
      */
     public function add(string $id, $entry) : void
     {
-        $this->entries[$id] = $this->entryFactory->create($id, $entry, false);
+        $this->entries[$id] = $this->entryFactory->create($id, $entry);
     }
 
     /**

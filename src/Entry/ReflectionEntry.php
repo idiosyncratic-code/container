@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Idiosyncratic\Container\Entry;
 
+use Exception;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use RuntimeException;
@@ -54,7 +55,13 @@ class ReflectionEntry implements Entry
 
         foreach ($constructor->getParameters() as $parameter) {
             try {
-                $arguments[] = $container->get($parameter->getClass()->getName());
+                $type = $parameter->getClass();
+
+                if ($type === null) {
+                    throw new Exception('Parameter type is not a valid class');
+                }
+
+                $arguments[] = $container->get($type->getName());
             } catch (Throwable $throwable) {
                 throw new RuntimeException(
                     sprintf('Could not create instance of %s', $this->class)
