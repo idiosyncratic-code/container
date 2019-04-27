@@ -12,7 +12,7 @@ use Idiosyncratic\Container\Exception\CouldNotResolveEntry;
 use Psr\Container\ContainerInterface;
 use Throwable;
 
-class Container implements ContainerInterface
+final class Container implements ContainerInterface
 {
     /** @var array<string, Entry> */
     private $entries;

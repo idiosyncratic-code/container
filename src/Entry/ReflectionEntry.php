@@ -11,7 +11,7 @@ use RuntimeException;
 use Throwable;
 use function sprintf;
 
-class ReflectionEntry implements Entry
+final class ReflectionEntry implements Entry
 {
     /** @var string */
     private $id;

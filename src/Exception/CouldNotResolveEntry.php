@@ -9,7 +9,7 @@ use RuntimeException;
 use Throwable;
 use function sprintf;
 
-class CouldNotResolveEntry extends RuntimeException implements ContainerExceptionInterface
+final class CouldNotResolveEntry extends RuntimeException implements ContainerExceptionInterface
 {
     public function __construct(string $id, Throwable $throwable)
     {

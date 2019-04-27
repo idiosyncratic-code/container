@@ -6,7 +6,7 @@ namespace Idiosyncratic\Container\Entry;
 
 use Psr\Container\ContainerInterface;
 
-class SharedEntry implements Entry
+final class SharedEntry implements Entry
 {
     /** @var Entry */
     private $entry;

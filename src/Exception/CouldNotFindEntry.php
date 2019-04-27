@@ -8,7 +8,7 @@ use OutOfBoundsException;
 use Psr\Container\NotFoundExceptionInterface;
 use function sprintf;
 
-class CouldNotFindEntry extends OutOfBoundsException implements NotFoundExceptionInterface
+final class CouldNotFindEntry extends OutOfBoundsException implements NotFoundExceptionInterface
 {
     public function __construct(string $id)
     {

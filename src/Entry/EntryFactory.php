@@ -9,7 +9,7 @@ use function interface_exists;
 use function is_callable;
 use function is_string;
 
-class EntryFactory
+final class EntryFactory
 {
     /**
      * @param mixed $content
