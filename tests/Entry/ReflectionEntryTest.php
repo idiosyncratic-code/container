@@ -63,23 +63,4 @@ class ReflectionEntryTest extends TestCase
 
         $entry->resolve($container);
     }
-
-    public function testItIsExtendable() : void
-    {
-        $container = new Container();
-
-        $container->add(ToneInterface::class, Buzz::class);
-
-        $entry = new ReflectionEntry(Doorbell::class, Doorbell::class);
-
-        $entry->extend(function (ContainerInterface $container, Doorbell $previous) {
-            $previous->changeTone(new Ring());
-
-            return $previous;
-        });
-
-        $resolved = $entry->resolve($container);
-
-        $this->assertEquals('ring!', $resolved->ring());
-    }
 }

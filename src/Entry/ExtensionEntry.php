@@ -7,7 +7,7 @@ namespace Idiosyncratic\Container\Entry;
 use Closure;
 use Psr\Container\ContainerInterface;
 
-final class CallableEntry implements Entry
+final class ExtensionEntry implements Entry
 {
     /** @var string */
     private $id;
@@ -15,11 +15,19 @@ final class CallableEntry implements Entry
     /** @var callable */
     private $callable;
 
-    public function __construct(string $id, callable $callable)
+    private $entry;
+
+    public function __construct(callable $extension, Entry $entry)
     {
         $this->id = $id;
 
-        $this->callable = $callable instanceof Closure ? $callable : Closure::fromCallable($callable);
+        $this->entry = $entry;
+
+        $extension = $extension instanceof Closure ? $extension : Closure::fromCallable($extension);
+
+        $this->callable = function (ContainerInterface $container) use ($extension, $entry) {
+            return $extension($container, $entry->resolve($container));
+        };
     }
 
     /**
@@ -27,7 +35,7 @@ final class CallableEntry implements Entry
      */
     public function getId() : string
     {
-        return $this->id;
+        return $this->entry->getId();
     }
 
     /**

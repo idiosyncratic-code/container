@@ -40,25 +40,4 @@ class CallableEntryTest extends TestCase
 
         $this->assertNotSame($entry->resolve($container), $entry->resolve($container));
     }
-
-    public function testItIsExtendable() : void
-    {
-        $container = $this->createMock(ContainerInterface::class);
-
-        $callable = function () {
-            return new stdClass();
-        };
-
-        $entry = new CallableEntry('test', $callable);
-
-        $entry->extend(function (ContainerInterface $container, $previous) {
-            $previous->foo = 'baz';
-
-            return $previous;
-        });
-
-        $resolved = $entry->resolve($container);
-
-        $this->assertEquals('baz', $resolved->foo);
-    }
 }

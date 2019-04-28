@@ -7,12 +7,9 @@ namespace Idiosyncratic\Container\Entry;
 use Closure;
 use Psr\Container\ContainerInterface;
 
-interface Entry
+interface ExtendableEntry extends Entry
 {
-    /**
-     * @return mixed
-     */
-    public function resolve(ContainerInterface $container);
+    public function extend(callable $extension) : void;
 
     public function getId() : string;
 }

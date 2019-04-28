@@ -21,23 +21,4 @@ class BaseEntryTest extends TestCase
 
         $this->assertEquals($content, $entry->resolve($container));
     }
-
-    public function testItIsExtendable() : void
-    {
-        $container = $this->createMock(ContainerInterface::class);
-
-        $content = ['foo', 'bar'];
-
-        $expectedContent = ['foo', 'bar', 'baz'];
-
-        $entry = new BaseEntry('test', $content);
-
-        $entry->extend(function (ContainerInterface $container, $previous) {
-            $previous[] = 'baz';
-
-            return $previous;
-        });
-
-        $this->assertEquals($expectedContent, $entry->resolve($container));
-    }
 }

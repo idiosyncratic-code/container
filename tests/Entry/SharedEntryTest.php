@@ -47,6 +47,8 @@ class SharedEntryTest extends TestCase
 
         $resolved = $entry->resolve($container);
 
+        $this->assertEquals(Doorbell::class, $entry->getId());
+
         $this->assertEquals('ring!', $resolved->ring());
 
         $this->assertSame($resolved, $entry->resolve($container));
