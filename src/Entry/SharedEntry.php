@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Idiosyncratic\Container\Entry;
 
+use Closure;
 use Psr\Container\ContainerInterface;
 
 final class SharedEntry implements Entry
@@ -33,5 +34,12 @@ final class SharedEntry implements Entry
     public function resolve(ContainerInterface $container)
     {
         return $this->resolved ?? $this->resolved = $this->entry->resolve($container);
+    }
+
+    public function extend(Closure $extension) : void
+    {
+        $this->entry->extend($extension);
+
+        $this->resolved = null;
     }
 }

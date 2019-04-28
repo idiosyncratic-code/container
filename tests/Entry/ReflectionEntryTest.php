@@ -8,6 +8,7 @@ use Idiosyncratic\Container\Container;
 use Idiosyncratic\Container\TestAsset\Buzz;
 use Idiosyncratic\Container\TestAsset\Doorbell;
 use Idiosyncratic\Container\TestAsset\Greeter;
+use Idiosyncratic\Container\TestAsset\Ring;
 use Idiosyncratic\Container\TestAsset\ToneInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -34,7 +35,11 @@ class ReflectionEntryTest extends TestCase
 
         $entry = new ReflectionEntry(Doorbell::class, Doorbell::class);
 
-        $this->assertInstanceOf(Doorbell::class, $entry->resolve($container));
+        $resolved = $entry->resolve($container);
+
+        $this->assertInstanceOf(Doorbell::class, $resolved);
+
+        $this->assertEquals('buzz!', $resolved->ring());
     }
 
     public function testItFailsToReflectClassesWithNonObjectConstructorParameter() : void
@@ -57,5 +62,24 @@ class ReflectionEntryTest extends TestCase
         $entry = new ReflectionEntry(ToneInterface::class, ToneInterface::class);
 
         $entry->resolve($container);
+    }
+
+    public function testItIsExtendable() : void
+    {
+        $container = new Container();
+
+        $container->add(ToneInterface::class, Buzz::class);
+
+        $entry = new ReflectionEntry(Doorbell::class, Doorbell::class);
+
+        $entry->extend(function (ContainerInterface $container, Doorbell $previous) {
+            $previous->changeTone(new Ring());
+
+            return $previous;
+        });
+
+        $resolved = $entry->resolve($container);
+
+        $this->assertEquals('ring!', $resolved->ring());
     }
 }

@@ -13,8 +13,13 @@ class Doorbell
         $this->tone = $tone;
     }
 
-    public function ring() : void
+    public function changeTone(ToneInterface $tone)
     {
-        print $this->tone->tone();
+        $this->tone = $tone;
+    }
+
+    public function ring() : string
+    {
+        return $this->tone->tone();
     }
 }

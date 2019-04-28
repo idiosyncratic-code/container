@@ -35,8 +35,16 @@ final class CallableEntry implements Entry
      */
     public function resolve(ContainerInterface $container)
     {
-        $callable = $this->callable;
 
-        return $callable($container);
+        return ($this->callable)($container);
+    }
+
+    public function extend(Closure $extension) : void
+    {
+        $previous = $this->callable;
+
+        $this->callable = function (ContainerInterface $container) use ($extension, $previous) {
+            return $extension($container, $previous($container));
+        };
     }
 }

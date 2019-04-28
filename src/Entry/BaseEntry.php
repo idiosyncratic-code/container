@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Idiosyncratic\Container\Entry;
 
+use Closure;
 use Psr\Container\ContainerInterface;
 
 final class BaseEntry implements Entry
@@ -37,6 +38,18 @@ final class BaseEntry implements Entry
      */
     public function resolve(ContainerInterface $container)
     {
-        return $this->content;
+        return $this->content instanceof Closure ? ($this->content)($container) : $this->content;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function extend(Closure $extension) : void
+    {
+        $previous = $this->content;
+
+        $this->content = function (ContainerInterface $container) use ($extension, $previous) {
+            return $extension($container, $previous);
+        };
     }
 }
