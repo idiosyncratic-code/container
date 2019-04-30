@@ -8,6 +8,7 @@ use Idiosyncratic\Container\Entry\Entry;
 use Idiosyncratic\Container\Entry\EntryFactory;
 use Idiosyncratic\Container\Entry\ExtendableEntry;
 use Idiosyncratic\Container\Entry\ExtensionEntry;
+use Idiosyncratic\Container\Entry\ReflectionEntry;
 use Idiosyncratic\Container\Entry\SharedEntry;
 use Idiosyncratic\Container\Exception\CouldNotFindEntry;
 use Idiosyncratic\Container\Exception\CouldNotResolveEntry;
@@ -22,9 +23,14 @@ final class Container implements ContainerInterface
     /** @var EntryFactory */
     private $entryFactory;
 
-    public function __construct()
+    /** @var bool */
+    private $autowire;
+
+    public function __construct(bool $autowire = false)
     {
         $this->entryFactory = new EntryFactory();
+
+        $this->autowire = $autowire;
     }
 
     /**
@@ -37,6 +43,10 @@ final class Container implements ContainerInterface
         }
 
         try {
+            if ($this->autowire === true && isset($this->entries[$id]) === false) {
+                $this->entries[$id] = new ReflectionEntry($id, $id);
+            }
+
             return $this->entries[$id]->resolve($this);
         } catch (Throwable $throwable) {
             throw new CouldNotResolveEntry($id, $throwable);
@@ -46,9 +56,9 @@ final class Container implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function has($id)
+    public function has($id) : bool
     {
-        return isset($this->entries[$id]);
+        return isset($this->entries[$id]) || ($this->autowire === true && class_exists($id));
     }
 
     /**
